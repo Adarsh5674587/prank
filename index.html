@@ -62,7 +62,6 @@ h1{
     transition:opacity 1s ease;
 }
 
-/* COLOR BLAST */
 .colorBlast{
     position:fixed;
     width:20px;
@@ -71,7 +70,6 @@ h1{
     animation:blast 1s ease-out forwards;
 }
 
-/* WATER GUN SPRAY */
 .water{
     position:fixed;
     width:10px;
@@ -104,6 +102,9 @@ h1{
         🎉 Happy Holi from <strong>Dipti Mhaske</strong> 🎨🔥
     </div>
 </div>
+
+<!-- 🔊 YOUR AUDIO FILE -->
+<audio id="holiSound" src="phatphrogstudio-phatphrogstudiocom-android-voice-system-hacked-480559.mp3"></audio>
 
 <script>
 
@@ -170,9 +171,15 @@ function showHoli(){
     reveal.style.opacity = "1";
     launchBlast();
     launchWater();
+
+    // 🔊 PLAY YOUR MP3
+    document.getElementById("holiSound").play().catch(() => {
+        document.body.addEventListener("click", () => {
+            document.getElementById("holiSound").play();
+        }, { once: true });
+    });
 }
 
-// COLOR BLAST FUNCTION
 function launchBlast(){
     for(let i=0;i<80;i++){
         let splash=document.createElement("div");
@@ -186,7 +193,6 @@ function launchBlast(){
     }
 }
 
-// WATER GUN FUNCTION
 function launchWater(){
     for(let i=0;i<100;i++){
         let water=document.createElement("div");
