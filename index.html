@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>System Breach</title>
+<title>System Breach Simulation</title>
 
 <style>
 body{
@@ -16,12 +16,12 @@ body{
     justify-content:center;
     align-items:center;
     height:100vh;
-    animation:shake 0.2s infinite;
+    animation:shake 0.15s infinite;
 }
 
 @keyframes shake{
     0%{transform:translate(1px,1px);}
-    50%{transform:translate(-1px,-2px);}
+    50%{transform:translate(-2px,-2px);}
     100%{transform:translate(1px,-1px);}
 }
 
@@ -40,12 +40,18 @@ canvas{
 
 h1{
     font-size:2em;
-    text-shadow:0 0 15px red;
+    text-shadow:0 0 20px red;
+}
+
+.status{
+    margin-top:10px;
+    font-size:18px;
 }
 
 .countdown{
     font-size:60px;
     margin-top:20px;
+    text-shadow:0 0 25px red;
 }
 
 .reveal{
@@ -63,7 +69,8 @@ h1{
 <canvas id="matrix"></canvas>
 
 <div class="container">
-    <h1>⚠ SOMEONE TAKING YOUR DATA ⚠</h1> 
+    <h1>⚠ SYSTEM BREACH SIMULATION ⚠</h1>
+    <div class="status" id="statusText">Initializing secure protocol...</div>
     <div class="countdown" id="countdown">10</div>
     <div class="reveal" id="reveal">
         🎉 Happy Holi from <strong>Dipti Mhaske</strong> 🎨🔥
@@ -78,7 +85,7 @@ const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
-const letters = "HACKED01";
+const letters = "01SECURE";
 const fontSize = 16;
 const columns = canvas.width/fontSize;
 const drops = [];
@@ -101,23 +108,36 @@ function draw(){
 }
 setInterval(draw,33);
 
-// COUNTDOWN
+// COUNTDOWN + STATUS CHANGE
 let timeLeft = 10;
 let countdownEl = document.getElementById("countdown");
 let reveal = document.getElementById("reveal");
+let statusText = document.getElementById("statusText");
 
 let interval = setInterval(()=>{
+
     timeLeft--;
     countdownEl.textContent = timeLeft;
+
+    if(timeLeft === 7){
+        statusText.textContent = "Analyzing network traffic...";
+    }
+    if(timeLeft === 4){
+        statusText.textContent = "Securing system firewall...";
+    }
+    if(timeLeft === 2){
+        statusText.textContent = "Finalizing protocol...";
+    }
 
     if(timeLeft <= 0){
         clearInterval(interval);
         showHoli();
     }
+
 },1000);
 
 function showHoli(){
-    document.body.style.animation = "none"; // stop shake
+    document.body.style.animation = "none";
     document.body.style.color = "#00ff88";
     reveal.style.opacity = "1";
     launchBlast();
@@ -125,7 +145,7 @@ function showHoli(){
 
 // COLOR BLAST
 function launchBlast(){
-    for(let i=0;i<60;i++){
+    for(let i=0;i<80;i++){
         let splash=document.createElement("div");
         splash.style.position="fixed";
         splash.style.width="20px";
