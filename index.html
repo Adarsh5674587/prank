@@ -61,6 +61,34 @@ h1{
     color:#00ff88;
     transition:opacity 1s ease;
 }
+
+/* COLOR BLAST */
+.colorBlast{
+    position:fixed;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    animation:blast 1s ease-out forwards;
+}
+
+/* WATER GUN SPRAY */
+.water{
+    position:fixed;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    animation:spray 1s linear forwards;
+}
+
+@keyframes blast{
+    from{transform:scale(0);opacity:1;}
+    to{transform:scale(6);opacity:0;}
+}
+
+@keyframes spray{
+    from{transform:translateX(0) translateY(0);opacity:1;}
+    to{transform:translateX(600px) translateY(-200px);opacity:0;}
+}
 </style>
 </head>
 
@@ -71,7 +99,7 @@ h1{
 <div class="container">
     <h1>⚠ SYSTEM BREACH SIMULATION ⚠</h1>
     <div class="status" id="statusText">Initializing secure protocol...</div>
-    <div class="countdown" id="countdown">10</div>
+    <div class="countdown" id="countdown">5</div>
     <div class="reveal" id="reveal">
         🎉 Happy Holi from <strong>Dipti Mhaske</strong> 🎨🔥
     </div>
@@ -108,8 +136,8 @@ function draw(){
 }
 setInterval(draw,33);
 
-// COUNTDOWN + STATUS CHANGE
-let timeLeft = 10;
+// COUNTDOWN
+let timeLeft = 5;
 let countdownEl = document.getElementById("countdown");
 let reveal = document.getElementById("reveal");
 let statusText = document.getElementById("statusText");
@@ -119,13 +147,13 @@ let interval = setInterval(()=>{
     timeLeft--;
     countdownEl.textContent = timeLeft;
 
-    if(timeLeft === 7){
+    if(timeLeft === 3){
         statusText.textContent = "Analyzing network traffic...";
     }
-    if(timeLeft === 4){
+    if(timeLeft === 2){
         statusText.textContent = "Securing system firewall...";
     }
-    if(timeLeft === 2){
+    if(timeLeft === 1){
         statusText.textContent = "Finalizing protocol...";
     }
 
@@ -141,34 +169,38 @@ function showHoli(){
     document.body.style.color = "#00ff88";
     reveal.style.opacity = "1";
     launchBlast();
+    launchWater();
 }
 
-// COLOR BLAST
+// COLOR BLAST FUNCTION
 function launchBlast(){
     for(let i=0;i<80;i++){
         let splash=document.createElement("div");
-        splash.style.position="fixed";
-        splash.style.width="20px";
-        splash.style.height="20px";
-        splash.style.borderRadius="50%";
+        splash.classList.add("colorBlast");
         splash.style.left=Math.random()*100+"vw";
         splash.style.top=Math.random()*100+"vh";
         splash.style.backgroundColor=
         ["red","yellow","blue","green","pink","orange","purple"][Math.floor(Math.random()*7)];
-        splash.style.animation="blast 1s ease-out forwards";
-
         document.body.appendChild(splash);
         setTimeout(()=>splash.remove(),1000);
     }
 }
-</script>
 
-<style>
-@keyframes blast{
-    from{transform:scale(0);opacity:1;}
-    to{transform:scale(6);opacity:0;}
+// WATER GUN FUNCTION
+function launchWater(){
+    for(let i=0;i<100;i++){
+        let water=document.createElement("div");
+        water.classList.add("water");
+        water.style.left="10px";
+        water.style.bottom="50px";
+        water.style.backgroundColor=
+        ["cyan","blue","pink","yellow","lime"][Math.floor(Math.random()*5)];
+        document.body.appendChild(water);
+        setTimeout(()=>water.remove(),1000);
+    }
 }
-</style>
+
+</script>
 
 </body>
 </html>
