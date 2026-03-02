@@ -3,19 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Holi Surprise Lockdown</title>
+<title>System Breach</title>
 
 <style>
 body{
     margin:0;
     background:black;
-    color:#00ff88;
+    color:#ff0000;
     font-family:monospace;
     overflow:hidden;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
+    animation:shake 0.2s infinite;
+}
+
+@keyframes shake{
+    0%{transform:translate(1px,1px);}
+    50%{transform:translate(-1px,-2px);}
+    100%{transform:translate(1px,-1px);}
 }
 
 canvas{
@@ -29,91 +36,70 @@ canvas{
     position:relative;
     z-index:2;
     text-align:center;
-    max-width:600px;
-    padding:20px;
-    background:rgba(0,0,0,0.85);
-    border:1px solid #00ff88;
-    border-radius:10px;
-    box-shadow:0 0 25px #00ff88;
+}
+
+h1{
+    font-size:2em;
+    text-shadow:0 0 15px red;
 }
 
 .countdown{
-    color:red;
-    font-size:28px;
-    margin-top:15px;
+    font-size:60px;
+    margin-top:20px;
 }
 
 .reveal{
-    font-size:1.8em;
-    color:#00ff88;
-    margin-top:25px;
-    opacity:0;
-    transition:opacity 1s ease;
-}
-
-button{
+    font-size:2em;
     margin-top:20px;
-    padding:10px 20px;
-    background:black;
+    opacity:0;
     color:#00ff88;
-    border:1px solid #00ff88;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#00ff88;
-    color:black;
-}
-
-/* Color blast */
-.colorBlast{
-    position:fixed;
-    width:20px;
-    height:20px;
-    border-radius:50%;
-    animation:blast 1.2s ease-out forwards;
-}
-
-@keyframes blast{
-    from{transform:scale(0);opacity:1;}
-    to{transform:scale(8);opacity:0;}
-}
-
-/* Water spray */
-.water{
-    position:fixed;
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    animation:spray 1s linear forwards;
-}
-
-@keyframes spray{
-    from{transform:translateX(0) translateY(0);opacity:1;}
-    to{transform:translateX(500px) translateY(-200px);opacity:0;}
+    transition:opacity 1s ease;
 }
 </style>
 </head>
 
 <body>
 
+<canvas id="matrix"></canvas>
+
 <div class="container">
-    <h1>⚠ SYSTEM LOCKDOWN INITIATED ⚠</h1>
-
-    <div class="countdown" id="countdown">
-        Lockdown In: 10
-    </div>
-
+    <h1>⚠ SOMEONE TAKING YOUR DATA ⚠</h1> 
+    <div class="countdown" id="countdown">10</div>
     <div class="reveal" id="reveal">
-        🎉 Happy Holi from <strong>Dipti Mhaske</strong> 🎨😂
+        🎉 Happy Holi from <strong>Dipti Mhaske</strong> 🎨🔥
     </div>
-
-    <button onclick="resetPrank()">Replay</button>
 </div>
 
-<canvas id="confetti"></canvas>
-
 <script>
+
+// MATRIX EFFECT
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const letters = "HACKED01";
+const fontSize = 16;
+const columns = canvas.width/fontSize;
+const drops = [];
+
+for(let x=0;x<columns;x++) drops[x]=1;
+
+function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.08)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#ff0000";
+    ctx.font=fontSize+"px monospace";
+
+    for(let i=0;i<drops.length;i++){
+        const text=letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+        if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+            drops[i]=0;
+        drops[i]++;
+    }
+}
+setInterval(draw,33);
 
 // COUNTDOWN
 let timeLeft = 10;
@@ -122,101 +108,47 @@ let reveal = document.getElementById("reveal");
 
 let interval = setInterval(()=>{
     timeLeft--;
-    countdownEl.textContent = "Lockdown In: " + timeLeft;
+    countdownEl.textContent = timeLeft;
 
     if(timeLeft <= 0){
         clearInterval(interval);
-        startHoliBlast();
+        showHoli();
     }
 },1000);
 
-function startHoliBlast(){
-    countdownEl.style.display="none";
-    reveal.style.opacity="1";
-    launchConfetti();
-    launchColorBlast();
-    launchWaterGun();
-}
-
-// CONFETTI
-function launchConfetti(){
-    const canvas = document.getElementById("confetti");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let pieces = [];
-    for(let i=0;i<150;i++){
-        pieces.push({
-            x:Math.random()*canvas.width,
-            y:Math.random()*canvas.height - canvas.height,
-            r:Math.random()*6+4,
-            color:`hsl(${Math.random()*360},100%,50%)`,
-            speed:Math.random()*3+2
-        });
-    }
-
-    function draw(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        pieces.forEach(p=>{
-            ctx.beginPath();
-            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-            ctx.fillStyle=p.color;
-            ctx.fill();
-            p.y += p.speed;
-            if(p.y > canvas.height){
-                p.y = -10;
-                p.x = Math.random()*canvas.width;
-            }
-        });
-        requestAnimationFrame(draw);
-    }
-    draw();
+function showHoli(){
+    document.body.style.animation = "none"; // stop shake
+    document.body.style.color = "#00ff88";
+    reveal.style.opacity = "1";
+    launchBlast();
 }
 
 // COLOR BLAST
-function launchColorBlast(){
-    for(let i=0;i<40;i++){
+function launchBlast(){
+    for(let i=0;i<60;i++){
         let splash=document.createElement("div");
-        splash.classList.add("colorBlast");
+        splash.style.position="fixed";
+        splash.style.width="20px";
+        splash.style.height="20px";
+        splash.style.borderRadius="50%";
         splash.style.left=Math.random()*100+"vw";
         splash.style.top=Math.random()*100+"vh";
         splash.style.backgroundColor=
         ["red","yellow","blue","green","pink","orange","purple"][Math.floor(Math.random()*7)];
+        splash.style.animation="blast 1s ease-out forwards";
+
         document.body.appendChild(splash);
-        setTimeout(()=>splash.remove(),1200);
+        setTimeout(()=>splash.remove(),1000);
     }
 }
-
-// WATER GUN
-function launchWaterGun(){
-    for(let i=0;i<80;i++){
-        let water=document.createElement("div");
-        water.classList.add("water");
-        water.style.left="10px";
-        water.style.bottom="50px";
-        water.style.backgroundColor=
-        ["cyan","blue","pink","yellow","lime"][Math.floor(Math.random()*5)];
-        document.body.appendChild(water);
-        setTimeout(()=>water.remove(),1000);
-    }
-}
-
-// SAFE EXIT SURPRISE
-let exitTriggered = false;
-
-window.addEventListener("mouseout", function(e){
-    if(!exitTriggered && e.clientY < 0){
-        exitTriggered = true;
-        startHoliBlast();
-    }
-});
-
-function resetPrank(){
-    location.reload();
-}
-
 </script>
+
+<style>
+@keyframes blast{
+    from{transform:scale(0);opacity:1;}
+    to{transform:scale(6);opacity:0;}
+}
+</style>
 
 </body>
 </html>
